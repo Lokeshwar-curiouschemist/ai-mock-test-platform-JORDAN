@@ -1,0 +1,800 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>EduMent - Test Analysis</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Poppins', sans-serif;
+    }
+
+    body {
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 20px;
+      position: relative;
+      overflow-x: hidden;
+    }
+
+    .logo-top-right {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      font-size: 1.5rem;
+      font-weight: 700;
+      color: white;
+      z-index: 200;
+      text-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+    }
+
+    .logo-top-right span {
+      color: #ff9800;
+    }
+
+    .books-background {
+      position: fixed;
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+      z-index: 0;
+    }
+
+    .book {
+      position: absolute;
+      width: 60px;
+      height: 45px;
+      transform-origin: center;
+      opacity: 0.1;
+      animation: float 8s ease-in-out infinite;
+    }
+
+    @keyframes float {
+      0%, 100% { transform: translateY(0px) rotate(var(--rotate)); }
+      50% { transform: translateY(-30px) rotate(calc(var(--rotate) + 8deg)); }
+    }
+
+    .book::before {
+      content: '';
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      background: white;
+      border-radius: 2px;
+      box-shadow: inset -2px 0 5px rgba(0,0,0,0.3);
+    }
+
+    .analysis-container {
+      background: white;
+      border-radius: 20px;
+      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+      max-width: 800px;
+      width: 100%;
+      position: relative;
+      z-index: 1;
+      animation: slideIn 0.5s ease;
+      overflow: hidden;
+    }
+
+    @keyframes slideIn {
+      from {
+        opacity: 0;
+        transform: translateY(30px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .analysis-header {
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      color: white;
+      padding: 30px;
+      text-align: center;
+    }
+
+    .header-icon {
+      font-size: 3rem;
+      margin-bottom: 10px;
+      animation: bounce 2s ease infinite;
+    }
+
+    @keyframes bounce {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-10px); }
+    }
+
+    .header-title {
+      font-size: 2rem;
+      font-weight: 700;
+      margin-bottom: 5px;
+    }
+
+    .header-subtitle {
+      font-size: 1rem;
+      opacity: 0.9;
+    }
+
+    .analysis-body {
+      padding: 40px;
+    }
+
+    /* Glass Container */
+    .glass-section {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      margin-bottom: 40px;
+      position: relative;
+      min-height: 400px;
+    }
+
+    .glass-container {
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 20px;
+    }
+
+    .glass-wrapper {
+      position: relative;
+      width: 180px;
+      height: 320px;
+    }
+
+    .glass {
+      position: relative;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(to bottom, 
+        rgba(255, 255, 255, 0.2) 0%,
+        rgba(255, 255, 255, 0.4) 50%,
+        rgba(255, 255, 255, 0.3) 100%
+      );
+      border-radius: 0 0 25px 25px;
+      border: 4px solid rgba(102, 126, 234, 0.3);
+      border-top: none;
+      box-shadow: 
+        inset 0 0 30px rgba(255, 255, 255, 0.3),
+        0 10px 30px rgba(0, 0, 0, 0.2);
+      overflow: hidden;
+      backdrop-filter: blur(10px);
+    }
+
+    .glass::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 20%;
+      width: 30%;
+      height: 100%;
+      background: linear-gradient(to right,
+        rgba(255, 255, 255, 0.4),
+        rgba(255, 255, 255, 0.1)
+      );
+      filter: blur(8px);
+    }
+
+    .water {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      height: 0%;
+      background: linear-gradient(to top,
+        #10b981 0%,
+        #34d399 50%,
+        #6ee7b7 100%
+      );
+      border-radius: 0 0 21px 21px;
+      transition: height 2s cubic-bezier(0.4, 0, 0.2, 1);
+      box-shadow: 
+        inset 0 0 30px rgba(16, 185, 129, 0.5),
+        0 -5px 20px rgba(16, 185, 129, 0.3);
+      animation: wave 3s ease-in-out infinite;
+    }
+
+    @keyframes wave {
+      0%, 100% {
+        clip-path: polygon(
+          0% 100%,
+          5% 98%,
+          10% 95%,
+          15% 98%,
+          20% 100%,
+          25% 98%,
+          30% 95%,
+          35% 98%,
+          40% 100%,
+          45% 98%,
+          50% 95%,
+          55% 98%,
+          60% 100%,
+          65% 98%,
+          70% 95%,
+          75% 98%,
+          80% 100%,
+          85% 98%,
+          90% 95%,
+          95% 98%,
+          100% 100%,
+          100% 100%,
+          0% 100%
+        );
+      }
+      50% {
+        clip-path: polygon(
+          0% 95%,
+          5% 100%,
+          10% 98%,
+          15% 95%,
+          20% 98%,
+          25% 100%,
+          30% 98%,
+          35% 95%,
+          40% 98%,
+          45% 100%,
+          50% 98%,
+          55% 95%,
+          60% 98%,
+          65% 100%,
+          70% 98%,
+          75% 95%,
+          80% 98%,
+          85% 100%,
+          90% 98%,
+          95% 95%,
+          100% 98%,
+          100% 100%,
+          0% 100%
+        );
+      }
+    }
+
+    .water::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(to bottom,
+        rgba(255, 255, 255, 0.4) 0%,
+        rgba(255, 255, 255, 0) 30%
+      );
+    }
+
+    .accuracy-label {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      z-index: 10;
+      text-align: center;
+      pointer-events: none;
+    }
+
+    .accuracy-value {
+      font-size: 3.5rem;
+      font-weight: 700;
+      color: #1f2937;
+      text-shadow: 0 2px 10px rgba(255, 255, 255, 0.8);
+      line-height: 1;
+    }
+
+    .accuracy-text {
+      font-size: 1rem;
+      color: #4b5563;
+      font-weight: 600;
+      margin-top: 5px;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+
+    /* Side Stats */
+    .side-stats {
+      position: absolute;
+      display: flex;
+      flex-direction: column;
+      gap: 25px;
+    }
+
+    .side-stats.left {
+      left: 0;
+      top: 50%;
+      transform: translateY(-50%);
+    }
+
+    .side-stats.right {
+      right: 0;
+      top: 50%;
+      transform: translateY(-50%);
+    }
+
+    .mini-stat {
+      background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
+      border-radius: 15px;
+      padding: 20px;
+      min-width: 140px;
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+      transition: all 0.3s ease;
+      border: 2px solid transparent;
+    }
+
+    .mini-stat:hover {
+      transform: scale(1.05);
+      box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+    }
+
+    .mini-stat.attempted {
+      background: linear-gradient(135deg, #dbeafe 0%, #bfdbfe 100%);
+      border-color: #3b82f6;
+    }
+
+    .mini-stat.time {
+      background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%);
+      border-color: #fbbf24;
+    }
+
+    .mini-stat-icon {
+      font-size: 1.8rem;
+      margin-bottom: 8px;
+    }
+
+    .mini-stat-value {
+      font-size: 1.8rem;
+      font-weight: 700;
+      color: #1f2937;
+      margin-bottom: 5px;
+    }
+
+    .mini-stat-label {
+      font-size: 0.85rem;
+      color: #6b7280;
+      font-weight: 500;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    /* Cloud Stats Section */
+    .cloud-stats-section {
+      display: flex;
+      justify-content: center;
+      gap: 30px;
+      margin-bottom: 30px;
+      flex-wrap: wrap;
+    }
+
+    .cloud-stat {
+      position: relative;
+      width: 220px;
+      height: 140px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      animation: cloudFloat 4s ease-in-out infinite;
+    }
+
+    .cloud-stat:nth-child(2) {
+      animation-delay: 0.5s;
+    }
+
+    @keyframes cloudFloat {
+      0%, 100% {
+        transform: translateY(0px);
+      }
+      50% {
+        transform: translateY(-15px);
+      }
+    }
+
+    .cloud-shape {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(135deg, #ffffff 0%, #f0f4ff 100%);
+      border-radius: 100px;
+      box-shadow: 
+        0 8px 25px rgba(102, 126, 234, 0.2),
+        inset 0 -5px 15px rgba(102, 126, 234, 0.1);
+      animation: cloudPulse 3s ease-in-out infinite;
+    }
+
+    @keyframes cloudPulse {
+      0%, 100% {
+        transform: scale(1);
+      }
+      50% {
+        transform: scale(1.05);
+      }
+    }
+
+    .cloud-shape::before {
+      content: '';
+      position: absolute;
+      top: -40px;
+      left: 30px;
+      width: 80px;
+      height: 80px;
+      background: linear-gradient(135deg, #ffffff 0%, #f0f4ff 100%);
+      border-radius: 50%;
+      box-shadow: 0 8px 25px rgba(102, 126, 234, 0.15);
+    }
+
+    .cloud-shape::after {
+      content: '';
+      position: absolute;
+      top: -25px;
+      right: 35px;
+      width: 65px;
+      height: 65px;
+      background: linear-gradient(135deg, #ffffff 0%, #f0f4ff 100%);
+      border-radius: 50%;
+      box-shadow: 0 8px 25px rgba(102, 126, 234, 0.15);
+    }
+
+    .cloud-content {
+      position: relative;
+      z-index: 10;
+      text-align: center;
+      padding: 20px;
+    }
+
+    .cloud-label {
+      font-size: 0.9rem;
+      color: #667eea;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      margin-bottom: 8px;
+    }
+
+    .cloud-value {
+      font-size: 2.2rem;
+      font-weight: 700;
+      color: #1f2937;
+      line-height: 1.2;
+      margin-bottom: 5px;
+    }
+
+    .cloud-unit {
+      font-size: 0.75rem;
+      color: #64748b;
+      font-weight: 500;
+    }
+
+    /* Next Steps Section */
+    .next-steps-section {
+      background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
+      border-radius: 15px;
+      padding: 25px;
+      margin-bottom: 30px;
+      color: white;
+    }
+
+    .next-steps-title {
+      font-size: 1.2rem;
+      font-weight: 600;
+      margin-bottom: 15px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .next-steps-content {
+      line-height: 1.8;
+    }
+
+    .next-steps-list {
+      list-style: none;
+      padding-left: 0;
+    }
+
+    .next-steps-list li {
+      padding: 8px 0 8px 30px;
+      position: relative;
+    }
+
+    .next-steps-list li::before {
+      content: '✓';
+      position: absolute;
+      left: 5px;
+      color: #fbbf24;
+      font-weight: 700;
+    }
+
+    /* Action Button */
+    .action-button {
+      width: 100%;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      color: white;
+      border: none;
+      padding: 18px 30px;
+      border-radius: 30px;
+      font-size: 1.1rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 12px;
+      box-shadow: 0 8px 20px rgba(102, 126, 234, 0.4);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .action-button::before {
+      content: '';
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      width: 0;
+      height: 0;
+      border-radius: 50%;
+      background: rgba(255, 255, 255, 0.2);
+      transform: translate(-50%, -50%);
+      transition: width 0.6s, height 0.6s;
+    }
+
+    .action-button:hover::before {
+      width: 400px;
+      height: 400px;
+    }
+
+    .action-button:hover {
+      transform: translateY(-3px) scale(1.05);
+      box-shadow: 0 12px 30px rgba(102, 126, 234, 0.6);
+    }
+
+    .action-button:active {
+      transform: translateY(-1px) scale(1.02);
+    }
+
+    .action-button span {
+      position: relative;
+      z-index: 1;
+    }
+
+    .button-icon {
+      font-size: 1.3rem;
+    }
+
+    @media (max-width: 768px) {
+      .analysis-body {
+        padding: 25px;
+      }
+
+      .glass-section {
+        min-height: 350px;
+      }
+
+      .glass-wrapper {
+        width: 140px;
+        height: 260px;
+      }
+
+      .side-stats {
+        position: relative;
+        flex-direction: row;
+        transform: none !important;
+        left: auto !important;
+        right: auto !important;
+        top: auto !important;
+        justify-content: center;
+        margin-top: 20px;
+      }
+
+      .side-stats.left,
+      .side-stats.right {
+        position: relative;
+      }
+
+      .mini-stat {
+        min-width: 120px;
+        padding: 15px;
+      }
+
+      .mini-stat-value {
+        font-size: 1.5rem;
+      }
+
+      .accuracy-value {
+        font-size: 2.5rem;
+      }
+
+      .header-title {
+        font-size: 1.5rem;
+      }
+
+      .logo-top-right {
+        font-size: 1.2rem;
+        bottom: 15px;
+        right: 15px;
+      }
+    }
+
+    @media (max-width: 480px) {
+      .side-stats {
+        flex-direction: column;
+        gap: 15px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <!-- EduMent Logo Top Right -->
+  <div class="logo-top-right">EduMent<span>!!!</span></div>
+
+  <!-- Books Background -->
+  <div class="books-background" id="booksBackground"></div>
+
+  <!-- Analysis Container -->
+  <div class="analysis-container">
+    <!-- Header -->
+    <div class="analysis-header">
+      <div class="header-icon">📊</div>
+      <h1 class="header-title">Test Complete</h1>
+      <p class="header-subtitle">Here's how you performed</p>
+    </div>
+
+    <!-- Body -->
+    <div class="analysis-body">
+      <!-- Glass Section -->
+      <div class="glass-section">
+        <!-- Left Stats -->
+        <div class="side-stats left">
+          <div class="mini-stat attempted">
+            <div class="mini-stat-icon">📝</div>
+            <div class="mini-stat-value" id="attemptedValue">0/15</div>
+            <div class="mini-stat-label">Attempted</div>
+          </div>
+        </div>
+
+        <!-- Glass Container -->
+        <div class="glass-container">
+          <div class="glass-wrapper">
+            <div class="glass">
+              <div class="water" id="waterFill"></div>
+            </div>
+            <div class="accuracy-label">
+              <div class="accuracy-value" id="accuracyValue">0%</div>
+              <div class="accuracy-text">Accuracy</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Right Stats -->
+        <div class="side-stats right">
+          <div class="mini-stat time">
+            <div class="mini-stat-icon">⏱️</div>
+            <div class="mini-stat-value" id="timeValue">1.7m</div>
+            <div class="mini-stat-label">Total Time</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Cloud Stats Section -->
+      <div class="cloud-stats-section">
+        <div class="cloud-stat">
+          <div class="cloud-shape"></div>
+          <div class="cloud-content">
+            <div class="cloud-label">Correct</div>
+            <div class="cloud-value" id="correctCount">0/0</div>
+          </div>
+        </div>
+        
+        <div class="cloud-stat">
+          <div class="cloud-shape"></div>
+          <div class="cloud-content">
+            <div class="cloud-label">Avg Time</div>
+            <div class="cloud-value" id="avgTime">0</div>
+            <div class="cloud-unit">seconds/question</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Next Steps Section -->
+      <div class="next-steps-section">
+        <h3 class="next-steps-title">
+          💡 Next Steps
+        </h3>
+        <div class="next-steps-content">
+          <p style="margin-bottom: 15px;">Needbackless! Focus on completing all questions.</p>
+          <ul class="next-steps-list">
+            <li>Daily practice</li>
+            <li>Time management</li>
+            <li>Review mistakes</li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- Action Button -->
+      <button class="action-button" id="dashboardButton">
+        <span class="button-icon">🏠</span>
+        <span>Proceed to Dashboard</span>
+      </button>
+    </div>
+  </div>
+
+  <script>
+    // Create books background
+    const booksBackground = document.getElementById('booksBackground');
+    for (let i = 0; i < 20; i++) {
+      const book = document.createElement('div');
+      book.className = 'book';
+      book.style.left = Math.random() * 100 + '%';
+      book.style.top = Math.random() * 100 + '%';
+      book.style.setProperty('--rotate', (Math.random() * 60 - 30) + 'deg');
+      book.style.animationDelay = Math.random() * 8 + 's';
+      booksBackground.appendChild(book);
+    }
+
+    // Sample data (will be replaced with backend data)
+    const testResults = {
+      accuracy: 0,
+      attempted: 0,
+      totalQuestions: 15,
+      correct: 0,
+      totalTime: 102, // in seconds (1.7 min)
+      avgTimePerQuestion: 0
+    };
+
+    // Calculate values and update display
+    function updateAnalysis() {
+      // Accuracy - fill water glass
+      const accuracyPercent = testResults.accuracy;
+      document.getElementById('accuracyValue').textContent = accuracyPercent + '%';
+      document.getElementById('waterFill').style.height = accuracyPercent + '%';
+      
+      // Attempted
+      document.getElementById('attemptedValue').textContent = 
+        `${testResults.attempted}/${testResults.totalQuestions}`;
+      
+      // Total Time
+      const minutes = Math.floor(testResults.totalTime / 60);
+      const seconds = testResults.totalTime % 60;
+      const decimalMinutes = (minutes + seconds / 60).toFixed(1);
+      document.getElementById('timeValue').textContent = decimalMinutes + 'm';
+      
+      // Correct Count
+      document.getElementById('correctCount').textContent = 
+        `${testResults.correct}/${testResults.attempted}`;
+      
+      // Avg Time per Question
+      if (testResults.attempted > 0) {
+        const avgTime = Math.round(testResults.totalTime / testResults.attempted);
+        document.getElementById('avgTime').textContent = avgTime;
+      } else {
+        document.getElementById('avgTime').textContent = '0';
+      }
+    }
+
+    // Dashboard button handler
+    document.getElementById('dashboardButton').addEventListener('click', () => {
+      // Replace with actual dashboard URL
+      alert('Redirecting to dashboard...');
+      // window.location.href = 'dashboard.html';
+    });
+
+    // Initialize
+    updateAnalysis();
+
+    // Animate water fill on page load
+    setTimeout(() => {
+      // This will be triggered with actual backend data
+      // Example: testResults.accuracy = 75;
+      // updateAnalysis();
+    }, 500);
+  </script>
+</body>
+</html>

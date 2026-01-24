@@ -1,0 +1,432 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Let's Get Started - EduMent</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Poppins', sans-serif;
+    }
+
+    body {
+      background: #f5f9ff;
+      height: 100vh;
+      overflow: hidden;
+      position: relative;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      animation: pageIn 0.6s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+    }
+
+    @keyframes pageIn {
+      0% {
+        opacity: 0;
+        transform: scale(0.8);
+      }
+      100% {
+        opacity: 1;
+        transform: scale(1);
+      }
+    }
+
+    .page-transition-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: #f5f9ff;
+      z-index: 9999;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      pointer-events: none;
+      opacity: 0;
+      transition: opacity 0.4s ease;
+    }
+
+    .page-transition-overlay.active {
+      opacity: 1;
+      pointer-events: all;
+    }
+
+    .transition-logo {
+      font-size: 3rem;
+      font-weight: 600;
+      color: #333;
+      animation: pulse 0.6s ease-in-out;
+    }
+
+    .transition-logo span {
+      color: #ff9800;
+    }
+
+    @keyframes pulse {
+      0%, 100% { transform: scale(1); }
+      50% { transform: scale(1.1); }
+    }
+
+    .fade-out {
+      animation: pageOut 0.4s cubic-bezier(0.6, -0.28, 0.735, 0.045) forwards;
+    }
+
+    @keyframes pageOut {
+      0% {
+        opacity: 1;
+        transform: scale(1);
+      }
+      100% {
+        opacity: 0;
+        transform: scale(0.8);
+      }
+    }
+
+    .books-background {
+      position: fixed;
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+      z-index: 0;
+      top: 0;
+      left: 0;
+    }
+
+    .book {
+      position: absolute;
+      width: 80px;
+      height: 60px;
+      transform-origin: center;
+      opacity: 0.5;
+      animation: float 6s ease-in-out infinite;
+    }
+
+    @keyframes float {
+      0%, 100% { transform: translateY(0px) rotate(var(--rotate)); }
+      50% { transform: translateY(-20px) rotate(calc(var(--rotate) + 5deg)); }
+    }
+
+    .book::before {
+      content: '';
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      background: var(--book-color);
+      border-radius: 2px;
+      box-shadow: 
+        inset -3px 0 5px rgba(0,0,0,0.2),
+        2px 2px 8px rgba(0,0,0,0.15);
+    }
+
+    .book::after {
+      content: '';
+      position: absolute;
+      left: 5px;
+      top: 5px;
+      right: 5px;
+      bottom: 5px;
+      background: linear-gradient(to right, 
+        transparent 0%, 
+        transparent 45%, 
+        rgba(0,0,0,0.1) 48%, 
+        rgba(255,255,255,0.3) 50%, 
+        rgba(0,0,0,0.1) 52%, 
+        transparent 55%, 
+        transparent 100%);
+      border-radius: 1px;
+    }
+
+    .quiz-container {
+      position: relative;
+      z-index: 10;
+      background: rgba(255, 255, 255, 0.95);
+      padding: 60px 80px;
+      border-radius: 20px;
+      box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
+      width: 90%;
+      max-width: 600px;
+      backdrop-filter: blur(10px);
+      text-align: center;
+    }
+
+    .quiz-header {
+      margin-bottom: 40px;
+    }
+
+    .quiz-header h1 {
+      font-size: 2.5rem;
+      font-weight: 600;
+      color: #333;
+      margin-bottom: 15px;
+    }
+
+    .quiz-header p {
+      font-size: 1.1rem;
+      color: #666;
+      line-height: 1.6;
+    }
+
+    .quiz-header p.subtitle {
+      font-size: 0.95rem;
+      color: #888;
+      margin-top: 10px;
+    }
+
+    .start-button {
+      padding: 16px 50px;
+      border: 2px solid #333;
+      background: white;
+      color: #333;
+      font-size: 1.1rem;
+      font-weight: 600;
+      border-radius: 50px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .start-button::before {
+      content: '';
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      width: 0;
+      height: 0;
+      border-radius: 50%;
+      background: #4a7cff;
+      transform: translate(-50%, -50%);
+      transition: width 0.5s, height 0.5s;
+    }
+
+    .start-button:hover::before {
+      width: 300px;
+      height: 300px;
+    }
+
+    .start-button span {
+      position: relative;
+      z-index: 1;
+      transition: color 0.3s ease;
+    }
+
+    .start-button:hover span {
+      color: white;
+    }
+
+    .start-button:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 8px 25px rgba(74, 124, 255, 0.4);
+      border-color: #4a7cff;
+    }
+
+    .ready-indicator {
+      margin-top: 25px;
+      font-size: 0.9rem;
+      color: #999;
+      font-style: italic;
+    }
+
+    .later-link {
+      margin-top: 12px;
+      font-size: 0.8rem;
+    }
+
+    .later-link a {
+      color: #999;
+      text-decoration: none;
+      transition: all 0.3s ease;
+      border-bottom: 1px solid transparent;
+    }
+
+    .later-link a:hover {
+      color: #4a7cff;
+      border-bottom-color: #4a7cff;
+    }
+
+    .logo-top {
+      position: fixed;
+      top: 30px;
+      left: 30px;
+      z-index: 20;
+      font-size: 1.5rem;
+      font-weight: 600;
+      color: #333;
+    }
+
+    .logo-top span {
+      color: #ff9800;
+    }
+
+    .company-name {
+      position: fixed;
+      bottom: 20px;
+      right: 30px;
+      font-size: 0.75rem;
+      color: #333333;
+      font-weight: 300;
+      z-index: 10;
+      letter-spacing: 0.5px;
+    }
+
+    /* Decorative Circle */
+    .decorative-circle {
+      position: absolute;
+      top: -30px;
+      left: -30px;
+      width: 100px;
+      height: 100px;
+      border: 3px solid #4a7cff;
+      border-radius: 50%;
+      opacity: 0.3;
+    }
+
+    @media (max-width: 768px) {
+      .quiz-container {
+        padding: 40px 30px;
+      }
+
+      .quiz-header h1 {
+        font-size: 2rem;
+      }
+
+      .quiz-header p {
+        font-size: 1rem;
+      }
+
+      .start-button {
+        padding: 14px 40px;
+        font-size: 1rem;
+      }
+
+      .logo-top {
+        top: 15px;
+        left: 15px;
+        font-size: 1.2rem;
+      }
+    }
+  </style>
+</head>
+<body>
+  <!-- Page Transition Overlay -->
+  <div class="page-transition-overlay" id="pageTransition">
+    <div class="transition-logo">EduMent<span>!!!</span></div>
+  </div>
+
+  <!-- Books Background -->
+  <div class="books-background" id="booksBackground"></div>
+
+  <!-- Logo Top Left -->
+  <div class="logo-top">
+    EduMent<span>!!!</span>
+  </div>
+
+  <!-- Quiz Start Container -->
+  <div class="quiz-container">
+    <div class="decorative-circle"></div>
+    
+    <div class="quiz-header">
+      <h1>Let's check your knowledge</h1>
+      <p>Are you ready to give a quick test?</p>
+      <p class="subtitle">Test your skills in under 15 mins</p>
+    </div>
+
+    <button class="start-button" id="startBtn">
+      <span>Let's Start!</span>
+    </button>
+
+    <p class="ready-indicator">Click when you're ready</p>
+    
+    <p class="later-link">
+      <a href="home.html">I'll do it later</a>
+    </p>
+  </div>
+
+  <!-- Company Name -->
+  <div class="company-name">JORDAN Pvt. Ltd.</div>
+
+  <script>
+    // Create colorful books background
+    const booksBackground = document.getElementById('booksBackground');
+    const bookColors = [
+      'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
+      'linear-gradient(135deg, #f093fb 0%, #f5576c 100%)',
+      'linear-gradient(135deg, #4facfe 0%, #00f2fe 100%)',
+      'linear-gradient(135deg, #43e97b 0%, #38f9d7 100%)',
+      'linear-gradient(135deg, #fa709a 0%, #fee140 100%)',
+      'linear-gradient(135deg, #30cfd0 0%, #330867 100%)',
+      'linear-gradient(135deg, #a8edea 0%, #fed6e3 100%)',
+      'linear-gradient(135deg, #ff9a9e 0%, #fecfef 100%)',
+      'linear-gradient(135deg, #ffecd2 0%, #fcb69f 100%)',
+      'linear-gradient(135deg, #ff6e7f 0%, #bfe9ff 100%)',
+      'linear-gradient(135deg, #e0c3fc 0%, #8ec5fc 100%)',
+      'linear-gradient(135deg, #f8b500 0%, #fceabb 100%)'
+    ];
+
+    for (let i = 0; i < 30; i++) {
+      const book = document.createElement('div');
+      book.className = 'book';
+      book.style.left = Math.random() * 100 + '%';
+      book.style.top = Math.random() * 100 + '%';
+      book.style.setProperty('--book-color', bookColors[Math.floor(Math.random() * bookColors.length)]);
+      book.style.setProperty('--rotate', (Math.random() * 60 - 30) + 'deg');
+      book.style.animationDelay = Math.random() * 6 + 's';
+      book.style.width = (Math.random() * 40 + 60) + 'px';
+      book.style.height = (Math.random() * 30 + 45) + 'px';
+      booksBackground.appendChild(book);
+    }
+
+    // Page Transition System
+    function navigateWithTransition(url) {
+      const overlay = document.getElementById('pageTransition');
+      const mainContent = document.querySelector('.quiz-container');
+      
+      if (mainContent) {
+        mainContent.classList.add('fade-out');
+      }
+      
+      overlay.classList.add('active');
+      
+      setTimeout(() => {
+        window.location.href = url;
+      }, 400);
+    }
+
+    // Handle Start Button
+    document.getElementById('startBtn').addEventListener('click', function() {
+      // Navigate to quiz selection page
+      navigateWithTransition('quiz-selection.html');
+    });
+
+    // Handle page show event
+    window.addEventListener('pageshow', function(event) {
+      const overlay = document.getElementById('pageTransition');
+      if (overlay) {
+        overlay.classList.remove('active');
+      }
+    });
+
+    // Intercept all link clicks for transitions
+    document.addEventListener('DOMContentLoaded', function() {
+      const links = document.querySelectorAll('a[href]:not([target="_blank"])');
+      
+      links.forEach(link => {
+        link.addEventListener('click', function(e) {
+          const href = this.getAttribute('href');
+          
+          if (href && !href.startsWith('#') && !href.startsWith('http') && !href.startsWith('mailto:')) {
+            e.preventDefault();
+            navigateWithTransition(href);
+          }
+        });
+      });
+    });
+  </script>
+</body>
+</html>

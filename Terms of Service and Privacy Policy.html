@@ -1,0 +1,633 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Terms & Privacy - EduMent</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Poppins', sans-serif;
+    }
+
+    body {
+      background: #f5f9ff;
+      min-height: 100vh;
+      overflow-x: hidden;
+      position: relative;
+      padding: 40px 20px 80px;
+    }
+
+    .books-background {
+      position: fixed;
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+      z-index: 0;
+      top: 0;
+      left: 0;
+    }
+
+    .book {
+      position: absolute;
+      width: 80px;
+      height: 60px;
+      transform-origin: center;
+      opacity: 0.5;
+      animation: float 6s ease-in-out infinite;
+    }
+
+    @keyframes float {
+      0%, 100% { transform: translateY(0px) rotate(var(--rotate)); }
+      50% { transform: translateY(-20px) rotate(calc(var(--rotate) + 5deg)); }
+    }
+
+    .book::before {
+      content: '';
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      background: var(--book-color);
+      border-radius: 2px;
+      box-shadow: 
+        inset -3px 0 5px rgba(0,0,0,0.2),
+        2px 2px 8px rgba(0,0,0,0.15);
+    }
+
+    .book::after {
+      content: '';
+      position: absolute;
+      left: 5px;
+      top: 5px;
+      right: 5px;
+      bottom: 5px;
+      background: linear-gradient(to right, 
+        transparent 0%, 
+        transparent 45%, 
+        rgba(0,0,0,0.1) 48%, 
+        rgba(255,255,255,0.3) 50%, 
+        rgba(0,0,0,0.1) 52%, 
+        transparent 55%, 
+        transparent 100%);
+      border-radius: 1px;
+    }
+
+    .back-home {
+      position: fixed;
+      top: 30px;
+      left: 30px;
+      z-index: 20;
+    }
+
+    .back-home a {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      color: #333;
+      text-decoration: none;
+      font-weight: 500;
+      padding: 10px 20px;
+      background: rgba(255, 255, 255, 0.9);
+      border-radius: 10px;
+      transition: all 0.3s ease;
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    }
+
+    .back-home a:hover {
+      background: white;
+      transform: translateX(-5px);
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.15);
+    }
+
+    .container {
+      position: relative;
+      z-index: 10;
+      max-width: 900px;
+      margin: 80px auto 40px;
+      background: rgba(255, 255, 255, 0.95);
+      padding: 50px 60px;
+      border-radius: 20px;
+      box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
+      backdrop-filter: blur(10px);
+    }
+
+    .header {
+      text-align: center;
+      margin-bottom: 40px;
+    }
+
+    .header h1 {
+      font-size: 2.5rem;
+      font-weight: 600;
+      color: #333;
+      margin-bottom: 10px;
+    }
+
+    .header h1 span {
+      color: #ff9800;
+    }
+
+    .header p {
+      font-size: 0.95rem;
+      color: #666;
+    }
+
+    .tab-navigation {
+      display: flex;
+      gap: 10px;
+      margin-bottom: 40px;
+      border-bottom: 2px solid #e0e0e0;
+    }
+
+    .tab-btn {
+      flex: 1;
+      padding: 15px 20px;
+      border: none;
+      background: transparent;
+      color: #666;
+      font-size: 1rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      border-bottom: 3px solid transparent;
+      position: relative;
+      bottom: -2px;
+    }
+
+    .tab-btn.active {
+      color: #4a7cff;
+      border-bottom-color: #4a7cff;
+    }
+
+    .tab-btn:hover {
+      color: #4a7cff;
+    }
+
+    .tab-content {
+      display: none;
+    }
+
+    .tab-content.active {
+      display: block;
+      animation: fadeIn 0.5s ease;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .content-section {
+      margin-bottom: 35px;
+    }
+
+    .content-section h2 {
+      font-size: 1.5rem;
+      color: #333;
+      margin-bottom: 15px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .content-section h2::before {
+      content: '';
+      width: 4px;
+      height: 24px;
+      background: #4a7cff;
+      border-radius: 2px;
+    }
+
+    .content-section p {
+      color: #555;
+      line-height: 1.8;
+      margin-bottom: 15px;
+    }
+
+    .content-section ul {
+      margin-left: 20px;
+      margin-bottom: 15px;
+    }
+
+    .content-section li {
+      color: #555;
+      line-height: 1.8;
+      margin-bottom: 8px;
+    }
+
+    .content-section strong {
+      color: #333;
+      font-weight: 600;
+    }
+
+    .highlight-box {
+      background: #f0f4ff;
+      border-left: 4px solid #4a7cff;
+      padding: 20px;
+      border-radius: 8px;
+      margin: 20px 0;
+    }
+
+    .highlight-box p {
+      margin: 0;
+    }
+
+    .contact-box {
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      color: white;
+      padding: 30px;
+      border-radius: 15px;
+      text-align: center;
+      margin-top: 40px;
+    }
+
+    .contact-box h3 {
+      font-size: 1.3rem;
+      margin-bottom: 10px;
+    }
+
+    .contact-box a {
+      color: white;
+      text-decoration: none;
+      font-weight: 600;
+      border-bottom: 2px solid rgba(255, 255, 255, 0.5);
+      transition: all 0.3s ease;
+    }
+
+    .contact-box a:hover {
+      border-bottom-color: white;
+    }
+
+    .company-name {
+      position: fixed;
+      bottom: 20px;
+      right: 30px;
+      font-size: 0.75rem;
+      color: #333333;
+      font-weight: 300;
+      z-index: 10;
+      letter-spacing: 0.5px;
+    }
+
+    .last-updated {
+      text-align: center;
+      color: #999;
+      font-size: 0.85rem;
+      margin-top: 40px;
+      padding-top: 20px;
+      border-top: 1px solid #e0e0e0;
+    }
+
+    @media (max-width: 768px) {
+      .container {
+        padding: 40px 30px;
+        margin: 60px 10px 40px;
+      }
+
+      .header h1 {
+        font-size: 2rem;
+      }
+
+      .tab-btn {
+        font-size: 0.9rem;
+        padding: 12px 15px;
+      }
+
+      .content-section h2 {
+        font-size: 1.2rem;
+      }
+
+      .back-home {
+        top: 15px;
+        left: 15px;
+      }
+    }
+    body {
+  animation: pageIn 0.6s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+}
+
+@keyframes pageIn {
+  0% { opacity: 0; transform: scale(0.8); }
+  100% { opacity: 1; transform: scale(1); }
+}
+
+.page-transition-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: #f5f9ff;
+  z-index: 9999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.4s ease;
+}
+
+.page-transition-overlay.active {
+  opacity: 1;
+  pointer-events: all;
+}
+
+.transition-logo {
+  font-size: 3rem;
+  font-weight: 600;
+  color: #333;
+  animation: pulse 0.6s ease-in-out;
+}
+
+.transition-logo span {
+  color: #ff9800;
+}
+
+@keyframes pulse {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.1); }
+}
+
+.fade-out {
+  animation: pageOut 0.4s cubic-bezier(0.6, -0.28, 0.735, 0.045) forwards;
+}
+
+@keyframes pageOut {
+  0% { opacity: 1; transform: scale(1); }
+  100% { opacity: 0; transform: scale(0.8); }
+}
+  </style>
+</head>
+<body>
+  <!-- Books Background -->
+  <div class="books-background" id="booksBackground"></div>
+
+  <!-- Back to Home -->
+  <div class="back-home">
+    <a href="Sign%20up.html">
+      <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M19 12H5M12 19l-7-7 7-7"/>
+      </svg>
+      Back to Sign up
+    </a>
+  </div>
+
+  <!-- Main Container -->
+  <div class="container">
+    <div class="header">
+      <h1>EduMent<span>!!!</span></h1>
+      <p>Our commitment to transparency and your privacy</p>
+    </div>
+
+    <!-- Tab Navigation -->
+    <div class="tab-navigation">
+      <button class="tab-btn active" onclick="switchTab('terms')">📜 Terms & Conditions</button>
+      <button class="tab-btn" onclick="switchTab('privacy')">🔒 Privacy Policy</button>
+    </div>
+
+    <!-- Terms & Conditions Tab -->
+    <div id="terms" class="tab-content active">
+      <div class="content-section">
+        <h2>1. Acceptance of Terms</h2>
+        <p>By registering or accessing EduMent, you agree to these Terms and our Privacy Policy. If you do not agree, please discontinue use of the site.</p>
+      </div>
+
+      <div class="content-section">
+        <h2>2. Eligibility</h2>
+        <p>You must be at least 13 years old to create an account. If you are under 18, you must have parental consent.</p>
+      </div>
+
+      <div class="content-section">
+        <h2>3. Account Responsibilities</h2>
+        <ul>
+          <li>You must provide accurate information when registering.</li>
+          <li>You are responsible for maintaining the confidentiality of your login credentials.</li>
+          <li>EduMent is not responsible for any unauthorized use of your account.</li>
+        </ul>
+      </div>
+
+      <div class="content-section">
+        <h2>4. Use of Platform</h2>
+        <p>You agree to use EduMent only for educational and lawful purposes. You must not:</p>
+        <ul>
+          <li>Copy, distribute, or resell any content or tests without permission.</li>
+          <li>Attempt to hack, reverse-engineer, or disrupt our services.</li>
+          <li>Upload harmful or misleading content.</li>
+        </ul>
+      </div>
+
+      <div class="content-section">
+        <h2>5. AI Features</h2>
+        <p>EduMent may use AI tools (including OpenAI APIs) to generate explanations, feedback, or analytics. These are provided for learning purposes only and may not always be 100% accurate.</p>
+      </div>
+
+      <div class="content-section">
+        <h2>6. Intellectual Property</h2>
+        <p>All materials on EduMent (logos, tests, designs, text, graphics) are owned or licensed by JORDAN Pvt. Ltd. You may not reproduce or reuse them without written consent.</p>
+      </div>
+
+      <div class="content-section">
+        <h2>7. Payment & Subscription</h2>
+        <p>If paid plans are introduced, all fees are non-refundable once services are delivered unless otherwise stated.</p>
+      </div>
+
+      <div class="content-section">
+        <h2>8. Termination</h2>
+        <p>EduMent reserves the right to suspend or terminate accounts that violate these Terms.</p>
+      </div>
+
+      <div class="content-section">
+        <h2>9. Disclaimer</h2>
+        <p>EduMent provides content "as-is." We do not guarantee perfect accuracy of mock test results or AI predictions.</p>
+      </div>
+
+      <div class="content-section">
+        <h2>10. Limitation of Liability</h2>
+        <p>EduMent and its developers will not be liable for any indirect or incidental damages resulting from use of the platform.</p>
+      </div>
+
+      <div class="content-section">
+        <h2>11. Changes to Terms</h2>
+        <p>We may update these Terms periodically. Continued use after changes implies acceptance of the new terms.</p>
+      </div>
+
+      <div class="contact-box">
+        <h3>Questions about our Terms?</h3>
+        <p>Email us at <a href="mailto:alegendofthenight6307@gmail.com">alegendofthenight6307@gmail.com</a></p>
+      </div>
+
+      <div class="last-updated">
+        Last Updated: January 24, 2026
+      </div>
+    </div>
+
+    <!-- Privacy Policy Tab -->
+    <div id="privacy" class="tab-content">
+      <div class="highlight-box">
+        <p><strong>EduMent</strong>, operated by <strong>JORDAN Pvt. Ltd.</strong>, values your privacy and is committed to protecting your personal information. This Privacy Policy explains what data we collect, how we use it, and your rights.</p>
+      </div>
+
+      <div class="content-section">
+        <h2>1. Information We Collect</h2>
+        <ul>
+          <li><strong>Personal Details:</strong> Name, email, and password (encrypted).</li>
+          <li><strong>Usage Data:</strong> Browser info, test activity, AI interactions.</li>
+          <li><strong>Cookies:</strong> To enhance user experience and maintain login sessions.</li>
+        </ul>
+      </div>
+
+      <div class="content-section">
+        <h2>2. How We Use Information</h2>
+        <ul>
+          <li>To create and manage user accounts.</li>
+          <li>To deliver mock tests and AI-based insights.</li>
+          <li>To improve website performance and personalization.</li>
+          <li>To communicate updates or changes in policies.</li>
+        </ul>
+      </div>
+
+      <div class="content-section">
+        <h2>3. Data Security</h2>
+        <p>Your data is stored securely using industry-standard encryption. Passwords are hashed, and access is restricted to authorized personnel.</p>
+      </div>
+
+      <div class="content-section">
+        <h2>4. Third-Party Services</h2>
+        <p>EduMent may use trusted third-party tools (like OpenAI APIs, Google Analytics, or payment processors). These services have their own privacy policies.</p>
+      </div>
+
+      <div class="content-section">
+        <h2>5. Cookies</h2>
+        <p>Cookies help remember user preferences and login sessions. You can disable cookies in your browser, but some site features may not work properly.</p>
+      </div>
+
+      <div class="content-section">
+        <h2>6. Your Rights</h2>
+        <p>You can:</p>
+        <ul>
+          <li>Request access or deletion of your account data.</li>
+          <li>Opt out of marketing emails (if any).</li>
+          <li>Contact us for privacy-related concerns.</li>
+        </ul>
+      </div>
+
+      <div class="content-section">
+        <h2>7. Children's Privacy</h2>
+        <p>We do not knowingly collect data from children under 13. Parents can request deletion of their child's data.</p>
+      </div>
+
+      <div class="content-section">
+        <h2>8. Policy Updates</h2>
+        <p>EduMent may update this policy periodically. We will notify users of any significant changes via the site or email.</p>
+      </div>
+
+      <div class="contact-box">
+        <h3>Privacy Concerns?</h3>
+        <p>Email us at <a href="mailto:alegendofthenight6307@gmail.com">alegendofthenight6307@gmail.com</a></p>
+      </div>
+
+      <div class="last-updated">
+        Last Updated: January 24, 2026
+      </div>
+    </div>
+  </div>
+
+  <!-- Company Name -->
+  <div class="company-name">JORDAN Pvt. Ltd.</div>
+
+  <script>
+    // Create colorful books background
+    const booksBackground = document.getElementById('booksBackground');
+    const bookColors = [
+      'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
+      'linear-gradient(135deg, #f093fb 0%, #f5576c 100%)',
+      'linear-gradient(135deg, #4facfe 0%, #00f2fe 100%)',
+      'linear-gradient(135deg, #43e97b 0%, #38f9d7 100%)',
+      'linear-gradient(135deg, #fa709a 0%, #fee140 100%)',
+      'linear-gradient(135deg, #30cfd0 0%, #330867 100%)',
+      'linear-gradient(135deg, #a8edea 0%, #fed6e3 100%)',
+      'linear-gradient(135deg, #ff9a9e 0%, #fecfef 100%)',
+      'linear-gradient(135deg, #ffecd2 0%, #fcb69f 100%)',
+      'linear-gradient(135deg, #ff6e7f 0%, #bfe9ff 100%)',
+      'linear-gradient(135deg, #e0c3fc 0%, #8ec5fc 100%)',
+      'linear-gradient(135deg, #f8b500 0%, #fceabb 100%)'
+    ];
+
+    for (let i = 0; i < 30; i++) {
+      const book = document.createElement('div');
+      book.className = 'book';
+      book.style.left = Math.random() * 100 + '%';
+      book.style.top = Math.random() * 100 + '%';
+      book.style.setProperty('--book-color', bookColors[Math.floor(Math.random() * bookColors.length)]);
+      book.style.setProperty('--rotate', (Math.random() * 60 - 30) + 'deg');
+      book.style.animationDelay = Math.random() * 6 + 's';
+      book.style.width = (Math.random() * 40 + 60) + 'px';
+      book.style.height = (Math.random() * 30 + 45) + 'px';
+      booksBackground.appendChild(book);
+    }
+
+    // Tab switching functionality
+    function switchTab(tabName) {
+      // Hide all tabs
+      const tabs = document.querySelectorAll('.tab-content');
+      tabs.forEach(tab => tab.classList.remove('active'));
+
+      // Remove active class from all buttons
+      const buttons = document.querySelectorAll('.tab-btn');
+      buttons.forEach(btn => btn.classList.remove('active'));
+
+      // Show selected tab
+      document.getElementById(tabName).classList.add('active');
+
+      // Add active class to clicked button
+      event.target.classList.add('active');
+
+      // Scroll to top smoothly
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+    // Page Transition System
+function navigateWithTransition(url) {
+  const overlay = document.getElementById('pageTransition');
+  const mainContent = document.querySelector('.signin-container, .signup-container, .container, .hero');
+  
+  if (mainContent) {
+    mainContent.classList.add('fade-out');
+  }
+  
+  overlay.classList.add('active');
+  
+  setTimeout(() => {
+    window.location.href = url;
+  }, 400);
+}
+
+document.addEventListener('DOMContentLoaded', function() {
+  const links = document.querySelectorAll('a[href]:not([target="_blank"])');
+  
+  links.forEach(link => {
+    link.addEventListener('click', function(e) {
+      const href = this.getAttribute('href');
+      
+      if (href && !href.startsWith('#') && !href.startsWith('http') && !href.startsWith('mailto:')) {
+        e.preventDefault();
+        navigateWithTransition(href);
+      }
+    });
+  });
+});
+
+window.addEventListener('pageshow', function(event) {
+  const overlay = document.getElementById('pageTransition');
+  if (overlay) {
+    overlay.classList.remove('active');
+  }
+});
+  </script>
+  <div class="page-transition-overlay" id="pageTransition">
+  <div class="transition-logo">EduMent<span>!!!</span></div>
+</div>
+</body>
+</html>
